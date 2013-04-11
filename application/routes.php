@@ -120,3 +120,29 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) return Redirect::to('login');
 });
+
+Route::filter('apiauth', function()
+{
+ 
+    // Test against the presence of Basic Auth credentials
+    $creds = array(
+        'username' => Request::getUser(),
+        'password' => Request::getPassword(),
+    );
+ 
+    if ( ! Auth::attempt($creds) ) {
+ 
+        return Response::json([
+            'error' => true,
+            'message' => 'Unauthorized Request'],
+            401
+        );
+ 
+    }
+ 
+});
+
+Route::get('authtest', array('before' => 'apiauth', function()
+{
+    return View::make('hello');
+}));
