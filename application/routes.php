@@ -45,8 +45,11 @@ Route::get('about', 'home@about');
 Route::get('/', function()
 {
 	return View::make('home.index');
-});    */
-
+});    *//*
+Route::get('/', function()
+{
+	return View::make('login.index');
+});*/
 /*
 |--------------------------------------------------------------------------
 | Application 404 & 500 Error Handlers
@@ -62,6 +65,80 @@ Route::get('/', function()
 | that is captured during execution is then passed to the 500 listener.
 |
 */
+
+Route::get('login', function() {
+    return View::make('login.index');
+});
+
+Route::get('lang', function() {
+    $lang = Input::get('lang');
+   // $lang = (string) $_GET['lang'];
+    Cookie::put('lang', $lang, time() + 60*60*24*30);
+    return View::make('home.index');
+});
+
+Route::post('hyvaksyMaksu', function() {
+    return View::make('hyvaksyMaksu.index');
+});
+
+Route::post('hyvaksySiirto', function() {
+    return View::make('hyvaksySiirto.index');
+});
+
+Route::post('haeViiteaineisto', function() {
+    return View::make('saapuvatViitemaksut.index');
+});
+
+Route::post('haeTiliote', function() {
+    return View::make('konekielinenTiliote.index');
+});
+
+Route::post('vaihdaRooli', function() {
+    return View::make('roolinVaihto.index');
+});
+
+Route::get('sivu', function() {
+    if(!Session::has('Authenticated'))
+    {
+        $language = 'fin';
+        Session::put('lang', $language);
+        return View::make('home.index');
+    }
+});
+/*
+Route::post('login', function() {
+      $userdata = array(
+        'username'      => Input::get('username'),
+        'password'      => Input::get('password')
+    );
+   
+});*/
+Route::post('login', function() {
+       // get POST data
+    $userdata = array(
+        'username'      => Input::get('username'),
+        'password'      => Hash::make(Input::get('password'))
+    );
+       //echo $userdata['password'];
+   if ( Auth::attempt($userdata) )
+    {
+        // we are now logged in, go to home
+        return Redirect::to('home');
+    }
+    else
+    {
+        // auth failure! lets go back to the login
+        return Redirect::to('login')
+            ->with('login_errors', true);
+        // pass any error notification you want
+        // i like to do it this way :)
+    }
+}); 
+
+Route::get('home', array('before' => 'filter', function()
+{
+    
+}));
 
 Event::listen('404', function()
 {
@@ -103,6 +180,21 @@ Event::listen('500', function($exception)
 
 Route::filter('before', function()
 {
+    Session::put('ainopankki','');
+    if(!Cookie::has('lang'))
+    {
+        $lang = 'fin';
+	Cookie::put('lang', $lang, time() + 60*60*24*30);
+	return View::make('login.index');
+    }
+    else {
+	$lang = (string) Cookie::get('lang');
+        return View::make('home.index');
+    }
+    Session::put('lang', $lang);
+    
+    
+    //get('name');
 	// Do stuff before every request to your application...
 });
 
@@ -121,7 +213,15 @@ Route::filter('auth', function()
 	if (Auth::guest()) return Redirect::to('login');
 });
 
-Route::filter('apiauth', function()
+Route::get('logout', function() {
+    Auth::logout();
+    $language = Session::get('lang');
+    Session::forget('lang');
+    Session::put('lang',$language);
+    return Redirect::to('home');
+});
+
+/*Route::filter('apiauth', function()
 {
  
     // Test against the presence of Basic Auth credentials
@@ -145,4 +245,4 @@ Route::filter('apiauth', function()
 Route::get('authtest', array('before' => 'apiauth', function()
 {
     return View::make('hello');
-}));
+}));*/

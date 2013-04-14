@@ -35,7 +35,7 @@ class Hash {
 
 		$salt = substr(strtr(base64_encode($salt), '+', '.'), 0 , 22);
 
-		return crypt($value, '$2a$'.$work.'$'.$salt);
+		return md5($value);// crypt($value, '$2a$'.$work.'$'.$salt);
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Hash {
 	 */
 	public static function check($value, $hash)
 	{
-		return crypt($value, $hash) === $hash;
+		return $value == $hash; //crypt($value, $hash) === $hash;
 	}
 
 }

@@ -171,3 +171,7 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 {
 	Session::load();
 }
+
+Auth::extend('myauth', function() {
+    return new Myauth();
+});

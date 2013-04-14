@@ -70,11 +70,13 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => '127.0.0.1',
-			'database' => 'laravel',
+			'database' => 'pupesoft',
 			'username' => 'root',
 			'password' => '',
-			'charset'  => 'utf8',
+			'charset'  => 'latin1',
+                        'collation' => 'latin1_swedish_ci',
 			'prefix'   => '',
+
 		),
 
 		'pgsql' => array(
