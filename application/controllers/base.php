@@ -21,7 +21,7 @@ class Base_Controller extends Controller {
         Asset::add('bootstrap-js', 'js/bootstrap.min.js');
         Asset::add('bootstrap-css', 'css/bootstrap.min.css');
         Asset::add('bootstrap-css-responsive', 'css/bootstrap-responsive.min.css', 'bootstrap-css');
-        Asset::add('style', 'css/style.css');
+        Asset::add('css','css/ainopankki_style.css');
         parent::__construct();
     }
 

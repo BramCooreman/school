@@ -1,34 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi" lang="fi">
     <head>
-        <meta charset="utf-8">
-        <title>Instapics</title>
-        {{ Asset::styles() }}
-        {{ Asset::scripts() }}
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/> 
+        <title>Ainopankki</title>
+        {{ HTML::style('css/ainopankki_style.css'); }}
+        {{ HTML::script('js/jquery-1.8.2.min.js'); }}
+        <link rel="shortcut icon" href="images/aino_favicon.png" />
+        {{ HTML::style('css/calendar/calendar.js'); }}
+        {{ HTML::script('js/calendar/calendar.js'); }}
+        {{ HTML::script('js/disable_enter.js'); }}
+        {{ HTML::script('js/confirm.js'); }}
     </head>
- 
-    <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="home">Instapics</a>
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            @section('navigation')
-                            <li class="active"><a href="home">Home</a></li>
-                            @yield_section
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
-        </div>
- 
-        <div class="container">
-            @yield('content')
-            <hr>
-            <footer>
-            <p>&copy; Instapics 2012</p>
-            </footer>
-        </div> <!-- /container -->
+      @yield('body')
+    
+      <div id="pohja">
+      @yield('pohja')
+         <div class ="palkki">
+         @yield('palkki')  
+         </div>
+         @yield('image')
+         <div id ="loginbar">
+         @yield('loginbar')  
+         </div>
+         <div id ="left">
+         @yield('left')  
+         </div> 
+         <div id ="content">
+         @yield('content')
+         </div>
+         <div id ="footer">
+         @yield('footer')  
+         </div>
+      </div>
     </body>
 </html>

@@ -22,7 +22,9 @@
  *
  * Avataan tietokantayhteys
  */
-function databaseConnect() {
+class Functions{
+    
+    public function databaseConnect() {
 
 	// Otetaan salasanat käyttöön
 	//require_once '../pupesoft/inc/salasanat.php';
@@ -38,6 +40,56 @@ function databaseConnect() {
 	}
 }
 
+   public static function loginInDB($username,$password)
+    {
+        DB::connection();
+        $flag = false;
+        $resultSet = DB::table('kuka')->join('yhtio', function($join){
+            $join->on('kuka.yhtio','=','yhtio.yhtio' );
+        })->join('TAMK_pankkitili',function($join){
+            $join->on('yhtio.ytunnus', '=', 'TAMK_pankkitili.ytunnus');
+        })->select(array("kuka.kuka","kuka.salasana","yhtio.ytunnus","yhtio.nimi","TAMK_pankkitili.tilinro","kuka.profiilit","kuka.tunnus"))
+                ->where('kuka.kuka','=' ,$username )->get();
+       
+        
+        $numRows =DB::table('kuka')->join('yhtio', function($join){
+            $join->on('kuka.yhtio','=','yhtio.yhtio' );
+        })->join('TAMK_pankkitili',function($join){
+            $join->on('yhtio.ytunnus', '=', 'TAMK_pankkitili.ytunnus');
+        })->select(array("kuka.kuka","kuka.salasana","yhtio.ytunnus","yhtio.nimi","TAMK_pankkitili.tilinro","kuka.profiilit"))
+                ->where('kuka.kuka','=' ,$username )->count();
+        
+        if ( $numRows == 0 ) 
+        {
+            Session::put("Authenticated", 0);
+        } 
+        else
+        {
+            $passwordFromDB = utf8_encode( $resultSet[0]->salasana );
+
+            if ($passwordFromDB == md5($password)) 
+            {
+                Session::put( "Authenticated" , 1 );
+                Session::put( "ytunnus" , $resultSet[0]->ytunnus );
+                Session::put( "yhtionNimi" , $resultSet[0]->nimi );
+                Session::put( "kayttaja" , $resultSet[0]->kuka );
+                Session::put( "tilinro" , $resultSet[0]->tilinro );
+
+                if($resultSet[0]->profiilit == 'Admin profil')
+                {
+                    Session::put( "rooli" , 1 );
+                }
+              
+            }
+            else 
+            {
+                Session::put("Authenticated", 0);
+                
+            }
+        }
+        return $resultSet[0];
+    }
+
 /**
  * Haetaan tilin saldo
  *
@@ -52,7 +104,7 @@ function databaseConnect() {
  * @return $tilinSaldo
  *  Tilin saldo
  */
-function getSaldo($tilinro, $pvm) {
+public static function getSaldo($tilinro, $pvm) {
 	$query = "	SELECT	sum(if(saaja = '$tilinro', summa, summa * -1))
 				FROM	TAMK_pankkitapahtuma
 				WHERE	(saaja = '$tilinro' OR maksaja = '$tilinro')
@@ -94,7 +146,7 @@ function getSaldo($tilinro, $pvm) {
  * @return $input
  *   TRUE jos päivä on oikeaa muotoa, FALSE jos ei ole
  */
-function checkDateInput($day,$month,$year){
+public static function checkDateInput($day,$month,$year){
 	$input = true;	
 	$year = trim($year);
 	$month = trim($month);
@@ -140,7 +192,7 @@ function checkDateInput($day,$month,$year){
  * @return	jos tieto on tyhjää, return false
  *			jos tietoa on, return yksi taulukon rivi
  */
-function getPossibleTableRow( $text, $data, $bold = false ) {
+public static function getPossibleTableRow( $text, $data, $bold = false ) {
 	$value = false;
 
 	if (!empty( $data )) {
@@ -167,7 +219,7 @@ function getPossibleTableRow( $text, $data, $bold = false ) {
  * @return	jos tieto tyhjää return false
  *			jos tietoa on, return yksi piilotettu kenttä oikealla tiedolla
  */
-function getPossibleHiddenField( $data, $fieldName ) {
+public static function getPossibleHiddenField( $data, $fieldName ) {
 	$value = false;
 	
 	if (!empty( $data )) {
@@ -185,7 +237,7 @@ function getPossibleHiddenField( $data, $fieldName ) {
  * $return 	Jos päiväys oikeaa muotoa, return true
  *			Jos päiväys ei ole oikeaa muotoa, return false
  */
-function checkDateFormat($date){
+public static function checkDateFormat($date){
 	if (preg_match ("/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})$/", $date, $parts)){
 		if(checkdate($parts[2],$parts[1],$parts[3])){
 			return $date;
@@ -207,7 +259,7 @@ function checkDateFormat($date){
  * @return	Jos $data on numeerista, return $data
  * 			Jos $data ei ole numeerista, return false
  */
-function isDataNumeric( $data ) {
+public static function isDataNumeric( $data ) {
 	$value = false;
 	$data = str_replace(",", ".", $data);
 	
@@ -224,7 +276,7 @@ function isDataNumeric( $data ) {
  * @access	public
  * @return	string	$number		18 characters long random number
  */
-function getArchiveReferenceNumber() {
+public static function getArchiveReferenceNumber() {
 	$number = uniqid('41n0P');
 	return $number;
 }
@@ -235,7 +287,7 @@ function getArchiveReferenceNumber() {
  *
  * @access	public
  */
-function validateSession(){
+public static function validateSession(){
 	// regenerate session id if it's more than 5 minutes old
 	if (!isset($_SESSION['created'])) {
 		$_SESSION['created'] = time();
@@ -266,7 +318,7 @@ function validateSession(){
  * @return IBANtilinumero
  *   Valmiiksi muokattu IBAN-tilinumero
  */
-function BBANtoIBAN($tilinumero)
+public static function BBANtoIBAN($tilinumero)
 {
 	$alkuperainen = $tilinumero;
 	
@@ -301,7 +353,7 @@ function BBANtoIBAN($tilinumero)
 /**
 * Define the url path for the resources
 */
-define('INCLUDE_PATH', './lang/');
+
 
 /**
 * Define the language using language code based on BCP 47 + RFC 4644,
@@ -311,7 +363,8 @@ define('INCLUDE_PATH', './lang/');
 */
 //$_SESSION['lang'] = 'fin';
 //if(isset($_SESSION['lang'])){
-define('LANGUAGE', $_SESSION['lang']);
+
+//define('LANGUAGE', $_SESSION['lang']);
 //}
 /*
  * Lokaalisaation muodostaminen
@@ -324,12 +377,15 @@ define('LANGUAGE', $_SESSION['lang']);
  *   IF valittu kieli on englanti, return HTML-ENTITIE -muodossa tekstitiedostosta haettu käännös
  */
  
-function localize($phrase) {
-	if(LANGUAGE != 'fin') {
+public static function localize($phrase) {
+    $INCLUDE_PATH = './lang/';
+    $language = Session::get("lang");
+    
+	if($language != 'fin') {
 		static $translations = NULL;
 	
 		if(is_null($translations)) {
-			$lang_file = INCLUDE_PATH. LANGUAGE . '.txt';
+			$lang_file = $INCLUDE_PATH. $language . '.txt';
 			
 			// Ei voida tarkastaa, löytyykö tiedostoa ilmeisimmin safe mode -rajoituksien myötä
 			/*if(!file_exists($lang_file)) {
@@ -349,5 +405,6 @@ function localize($phrase) {
 		// TODO: muokattava kun tietokanta on saatu UTF-8 muotoon
 		return mb_convert_encoding($phrase, 'HTML-ENTITIES', 'UTF-8');
 	}
+}
 }
 ?>

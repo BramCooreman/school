@@ -47,6 +47,11 @@ $aliases = Laravel\Config::get('application.aliases');
 
 Laravel\Autoloader::$aliases = $aliases;
 
+Autoloader::namespaces(array(
+    'notifications' =>  path('app').'libraries'.DS.'notifications',
+    'functions'=> path('app').'libraries'.DS.'functions',
+
+));
 /*
 |--------------------------------------------------------------------------
 | Auto-Loader Mappings
@@ -172,6 +177,6 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 	Session::load();
 }
 
-Auth::extend('myauth', function() {
-    return new Myauth();
+Auth::extend('authentication', function() {
+    return new Authentication();
 });

@@ -4,9 +4,7 @@ class Login_Controller extends Base_Controller
 {    
     public function action_index()
     {
-        //do our login mechanisms here
-        //return View::make('login.index');
-        echo 'test'; //echo test so we can test this controller out
+        
     }
     
     public $restful = true;
@@ -15,8 +13,10 @@ class Login_Controller extends Base_Controller
     {
         //all POST requests to /api/authenticate will go here
         //any other requests that are NOT POST will NOT go here.
+        echo "test";
     }
-     
+    
+   
     public function get_user()
     {
        // echo Input::get('lang');
@@ -33,7 +33,7 @@ class Login_Controller extends Base_Controller
         $email = Input::get('email');
         $password = Input::get('password');
         
-        
+        echo "test";
         
       //  echo  $user_id = Input::get('username');
         //Create a new User

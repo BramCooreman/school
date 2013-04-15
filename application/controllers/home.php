@@ -29,13 +29,26 @@ class Home_Controller extends Base_Controller {
 	|		}
 	|
 	*/
-
-	public function action_index()
-	{
-       
+    public $restful = true;
+    
+    public function get_index()
+    {
         Session::put('ainopankki','');
-		return View::make('home.index');
-	}
+        if(Input::has("sivu"))
+        {
+            $sivu = Input::get("sivu");
+        }
+        $sivu = Input::get("sivu");
+        
+        if(empty($sivu))
+            $sivu = "etusivu";
+        return View::make('home.index')->with('sivu',$sivu);
+    }
+    
+    public function action_sivu()
+    {
+        echo 'test';
+    }
     
     public function action_about()
     {

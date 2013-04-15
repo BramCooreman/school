@@ -37,15 +37,20 @@ Route::any('home', function()
 {
     return View::make('home.index');
 });     */
-Route::controller('home');
 
-Route::controller(Controller::detect());
-Route::get('about', 'home@about');
-/*
-Route::get('/', function()
+
+Route::get('uusiMaksu', function() {
+    return Route::controller('uusiMaksu.index');
+});
+
+//Route::controller('uusiMaksu');
+//Route::controller(Controller::detect());
+//Route::get('about', 'home@about');
+Route::controller('home');
+/*Route::get('/', function()
 {
-	return View::make('home.index');
-});    *//*
+	return 
+});    
 Route::get('/', function()
 {
 	return View::make('login.index');
@@ -65,16 +70,20 @@ Route::get('/', function()
 | that is captured during execution is then passed to the 500 listener.
 |
 */
-
+/*
 Route::get('login', function() {
-    return View::make('login.index');
+    return Route::controller('login');
+});*/
+
+Route::get('lang/(:any)', function($language) {
+    Cookie::put('lang', $language, time() + 60*60*24*30);
+    return Redirect::to('home');
+    
 });
 
-Route::get('lang', function() {
-    $lang = Input::get('lang');
-   // $lang = (string) $_GET['lang'];
-    Cookie::put('lang', $lang, time() + 60*60*24*30);
-    return View::make('home.index');
+Route::post('lang/(:any)', function($language) {
+    Cookie::put('lang', $language, time() + 60*60*24*30);
+    return Route::controller('home');
 });
 
 Route::post('hyvaksyMaksu', function() {
@@ -102,8 +111,12 @@ Route::get('sivu', function() {
     {
         $language = 'fin';
         Session::put('lang', $language);
-        return View::make('home.index');
+        return Route::controller('home');
     }
+});
+
+Route::get('sivu/(:any)', function($sivu) {
+   return Redirect::to('home')->with('sivu',$sivu);
 });
 /*
 Route::post('login', function() {
@@ -116,8 +129,8 @@ Route::post('login', function() {
 Route::post('login', function() {
        // get POST data
     $userdata = array(
-        'username'      => Input::get('username'),
-        'password'      => Hash::make(Input::get('password'))
+        'username'      => mysql_real_escape_string(Input::get('username')),
+        'password'      => mysql_real_escape_string(Input::get('password'))
     );
        //echo $userdata['password'];
    if ( Auth::attempt($userdata) )
@@ -133,12 +146,12 @@ Route::post('login', function() {
         // pass any error notification you want
         // i like to do it this way :)
     }
-}); 
-
+});
+/*
 Route::get('home', array('before' => 'filter', function()
 {
     
-}));
+}));*/
 
 Event::listen('404', function()
 {
@@ -181,18 +194,22 @@ Event::listen('500', function($exception)
 Route::filter('before', function()
 {
     Session::put('ainopankki','');
+    $route ="";
     if(!Cookie::has('lang'))
     {
         $lang = 'fin';
 	Cookie::put('lang', $lang, time() + 60*60*24*30);
-	return View::make('login.index');
+        $route = "login";
+	//return Route::controller('login');
     }
     else {
 	$lang = (string) Cookie::get('lang');
-        return View::make('home.index');
+        $route = "home";
+        //return Route::controller('home');
     }
-    Session::put('lang', $lang);
     
+    Session::put('lang', $lang);
+    return Route::controller($route);
     
     //get('name');
 	// Do stuff before every request to your application...
@@ -217,6 +234,7 @@ Route::get('logout', function() {
     Auth::logout();
     $language = Session::get('lang');
     Session::forget('lang');
+    Session::flush();
     Session::put('lang',$language);
     return Redirect::to('home');
 });
