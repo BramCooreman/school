@@ -42,7 +42,8 @@ class Home_Controller extends Base_Controller {
         
         if(empty($sivu))
             $sivu = "etusivu";
-        return View::make('home.index')->with('sivu',$sivu);
+        Session::put('sivu', $sivu);
+        return View::make('home.index');//->with('sivu',$sivu);
     }
     
     public function action_sivu()

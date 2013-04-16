@@ -6,13 +6,13 @@
         {{ HTML::style('css/ainopankki_style.css'); }}
         {{ HTML::script('js/jquery-1.8.2.min.js'); }}
         <link rel="shortcut icon" href="images/aino_favicon.png" />
-        {{ HTML::style('css/calendar/calendar.js'); }}
+        {{ HTML::style('css/calendar/calendar.css'); }}
         {{ HTML::script('js/calendar/calendar.js'); }}
         {{ HTML::script('js/disable_enter.js'); }}
         {{ HTML::script('js/confirm.js'); }}
     </head>
       @yield('body')
-    
+      @yield('scripts')
       <div id="pohja">
       @yield('pohja')
          <div class ="palkki">
@@ -27,6 +27,7 @@
          </div> 
          <div id ="content">
          @yield('content')
+         @yield('page')
          </div>
          <div id ="footer">
          @yield('footer')  

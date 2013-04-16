@@ -38,12 +38,9 @@ Route::any('home', function()
     return View::make('home.index');
 });     */
 
-
-Route::get('uusiMaksu', function() {
-    return Route::controller('uusiMaksu.index');
-});
-
-//Route::controller('uusiMaksu');
+Route::controller('uusimaksu');
+Route::controller('eraantyvatmaksut');
+Route::controller('account');
 //Route::controller(Controller::detect());
 //Route::get('about', 'home@about');
 Route::controller('home');
@@ -77,13 +74,7 @@ Route::get('login', function() {
 
 Route::get('lang/(:any)', function($language) {
     Cookie::put('lang', $language, time() + 60*60*24*30);
-    return Redirect::to('home');
-    
-});
-
-Route::post('lang/(:any)', function($language) {
-    Cookie::put('lang', $language, time() + 60*60*24*30);
-    return Route::controller('home');
+    return Redirect::back();    
 });
 
 Route::post('hyvaksyMaksu', function() {

@@ -105,7 +105,19 @@ class Functions{
  *  Tilin saldo
  */
 public static function getSaldo($tilinro, $pvm) {
-	$query = "	SELECT	sum(if(saaja = '$tilinro', summa, summa * -1))
+    $row = DB::query("	SELECT	sum(if(saaja = '$tilinro', summa, summa * -1))
+				FROM	TAMK_pankkitapahtuma
+				WHERE	(saaja = '$tilinro' OR maksaja = '$tilinro')
+				AND		tapvm <= '$pvm' 
+				AND		(eiVaikutaSaldoon = ''
+						OR eiVaikutaSaldoon IS NULL
+						OR eiVaikutaSaldoon = 'k'
+						OR eiVaikutaSaldoon = 'a'
+						OR eiVaikutaSaldoon = 'l'
+						OR eiVaikutaSaldoon = 'm'
+						)
+				");
+/*    $query = "	SELECT	sum(if(saaja = '$tilinro', summa, summa * -1))
 				FROM	TAMK_pankkitapahtuma
 				WHERE	(saaja = '$tilinro' OR maksaja = '$tilinro')
 				AND		tapvm <= '$pvm' 
@@ -120,7 +132,8 @@ public static function getSaldo($tilinro, $pvm) {
 	$result = mysql_query($query);
 	
 	$row = mysql_fetch_array($result);
-	
+	*/
+    
 	$tilinSaldo = $row[0];
 	
 	if(!$tilinSaldo) 

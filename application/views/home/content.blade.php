@@ -3,20 +3,19 @@
 if(Input::has('sivu'))
 {
     $sivu = Input::get('sivu');
-    
-    
-    
+    Session::put('sivu',Input::get('sivu'));
 }
 if (isset($_GET[ 'sivu' ])) {
-    Response::view($sivu)      ;
-        $sivu = $_GET[ 'sivu' ] . '.php';
+   // Route::controller($sivu)      ;
+    Session::put('sivu',$sivu);
+   echo View::make($sivu.'.index');
+   
+ //echo   Redirect::to($sivu);
         
-        if (file_exists($sivu)) {
+      
             
-                require_once $sivu;
-        } else {
-              //  print '<p>'.Functions::localize('Hakemaasi sivua ei löydy').'</p>';
-        }
+                      //  print '<p>'.Functions::localize('Hakemaasi sivua ei löydy').'</p>';
+        
     } else {?>
            {{ render('login.index') }} 
  <?php   }

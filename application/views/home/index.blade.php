@@ -1,8 +1,8 @@
 @layout('layouts/main')
  @section('body')
-<?php print '<body class="' . $sivu . '">'; ?>
+ <?php print '<body class="' . Session::get('sivu'). '">'; ?>
 
- 
+
     @section('pohja')
      {{ render('home.header') }}
      {{ render('home.login') }}
