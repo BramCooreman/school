@@ -40,6 +40,7 @@ Route::any('home', function()
 
 Route::controller('uusimaksu');
 Route::controller('eraantyvatmaksut');
+Route::controller('tilitapahtumat');
 Route::controller('account');
 //Route::controller(Controller::detect());
 //Route::get('about', 'home@about');
