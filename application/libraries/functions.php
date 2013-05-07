@@ -42,7 +42,7 @@ class Functions{
 
    public static function loginInDB($username,$password)
     {
-        DB::connection();
+        
         $flag = false;
         $resultSet = DB::table('kuka')->join('yhtio', function($join){
             $join->on('kuka.yhtio','=','yhtio.yhtio' );

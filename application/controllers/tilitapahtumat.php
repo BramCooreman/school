@@ -224,11 +224,16 @@ class Tilitapahtumat_Controller extends Base_Controller
               $organizationInfo = Pankkitapahtuma::organizationInfo($tilinro);
         }
         
-	return $values = array('bankAccount' => $bankAccount, 'organizationInfo' => $organizationInfo, 'tilinro' => $tilinro);
+	return $values = array('bankAccount' => $bankAccount,
+            'organizationInfo' => $organizationInfo, 'tilinro' => $tilinro);
         
                          /*  return View::make('home.index')
                                     ->nest('content', 'tilitapahtumat.index', $values); // printTimeFrameSearchForm();
                     	*/
         	
+    }
+    
+    public function __construct() {
+        parent::__construct();
     }
 }

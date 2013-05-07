@@ -37,14 +37,30 @@ Route::any('home', function()
 {
     return View::make('home.index');
 });     */
+//
+/*
+Route::filter('filter', function()
+{
+    return Redirect::to('home');
+});
 
-Route::controller('uusimaksu');
+Route::get('uusimaksu', array('before' => 'filter', function()
+{
+    return View::make('uusimaksu');
+}));*/
+Route::any('api/v1/todos/(:num?)', array('as' => 'api.todos', 'uses' => 'api.todos@index'));
+/*Route::controller('uusimaksu');
 Route::controller('eraantyvatmaksut');
 Route::controller('tilitapahtumat');
 Route::controller('account');
+Route::controller('luotontiedot');
+Route::controller('siirrarahaa');
+Route::controller('roolinvaihto');
+Route::secure_controller('home');*/
+
 //Route::controller(Controller::detect());
 //Route::get('about', 'home@about');
-Route::controller('home');
+
 /*Route::get('/', function()
 {
 	return 
@@ -73,6 +89,14 @@ Route::get('login', function() {
     return Route::controller('login');
 });*/
 
+/*
+Route::get('luotontiedot', function() {
+     $url = Input::get('ref');
+     return View::make('luotontiedot.index', $url);
+});
+*/
+
+
 Route::get('lang/(:any)', function($language) {
     Cookie::put('lang', $language, time() + 60*60*24*30);
     return Redirect::back();    
@@ -98,6 +122,7 @@ Route::post('vaihdaRooli', function() {
     return View::make('roolinVaihto.index');
 });
 
+/*
 Route::get('sivu', function() {
     if(!Session::has('Authenticated'))
     {
@@ -109,7 +134,7 @@ Route::get('sivu', function() {
 
 Route::get('sivu/(:any)', function($sivu) {
    return Redirect::to('home')->with('sivu',$sivu);
-});
+});*/
 /*
 Route::post('login', function() {
       $userdata = array(
@@ -118,6 +143,8 @@ Route::post('login', function() {
     );
    
 });*/
+
+/*
 Route::post('login', function() {
        // get POST data
     $userdata = array(
@@ -139,11 +166,10 @@ Route::post('login', function() {
         // i like to do it this way :)
     }
 });
-/*
-Route::get('home', array('before' => 'filter', function()
-{
-    
-}));*/
+
+Route::get('login', function() {
+    return View::make('home.index'); 
+});*/
 
 Event::listen('404', function()
 {
@@ -182,7 +208,7 @@ Event::listen('500', function($exception)
 |		}));
 |
 */
-
+/*
 Route::filter('before', function()
 {
     Session::put('ainopankki','');
@@ -192,14 +218,14 @@ Route::filter('before', function()
         $lang = 'fin';
 	Cookie::put('lang', $lang, time() + 60*60*24*30);
         $route = "login";
-	//return Route::controller('login');
+	    //return Route::controller('login');
     }
     else {
-	$lang = (string) Cookie::get('lang');
-        $route = "home";
+	    $lang = (string) Cookie::get('lang');
+            $route = "home";
         //return Route::controller('home');
     }
-    
+
     Session::put('lang', $lang);
     return Route::controller($route);
     
@@ -229,7 +255,7 @@ Route::get('logout', function() {
     Session::flush();
     Session::put('lang',$language);
     return Redirect::to('home');
-});
+});*/
 
 /*Route::filter('apiauth', function()
 {

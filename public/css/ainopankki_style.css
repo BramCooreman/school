@@ -223,6 +223,7 @@ body.eraantyvatMaksut ul#navi a.eraantyvatMaksut,
 body.tilitapahtumat ul#navi a.tilitapahtumat, 
 body.luotonTiedot ul#navi a.luotonTiedot, 
 body.aineistohaku ul#navi a.aineistohaku, 
+body.siirraRahaa ul#navi a.siirraRahaa, 
 body.roolinVaihto ul#navi a.roolinVaihto {
 	color: #c1d62f;
 	font-weight: bold;

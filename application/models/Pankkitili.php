@@ -2,10 +2,11 @@
 
 class Pankkitili extends Eloquent {
  
-    public static $table = 'TAMK_pankkitili';
+    public static $tables = 'TAMK_pankkitili';
  
     public static function accountNumber($saaja) {
-        $query =  DB::table('TAMK_pankkitili')->select('omistaja')->where('yhtio', '=', 'pankk')->where('tilinro', '=',$saaja);      
+        $query =  DB::table('TAMK_pankkitili')->select('omistaja')
+                ->where('yhtio', '=', 'pankk')->where('tilinro', '=',$saaja);      
         return array('count'=>$query->count(),'result'=>$query->get());
     }   
     

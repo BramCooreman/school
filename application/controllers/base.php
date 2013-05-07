@@ -25,6 +25,11 @@ class Base_Controller extends Controller {
         Asset::add('bootstrap-css', 'css/bootstrap.min.css');
         Asset::add('bootstrap-css-responsive', 'css/bootstrap-responsive.min.css', 'bootstrap-css');
         Asset::add('css','css/ainopankki_style.css');
+        
+        if(!Session::get( "Authenticated")){
+            $this->filter('before', 'auth');
+        }
+        
         parent::__construct();
     }
 

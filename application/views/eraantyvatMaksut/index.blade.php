@@ -17,7 +17,7 @@
         	echo "<tr><td>".Functions::localize('Erääntyvät maksut')." </td><td>"
 			. $printToday ."</td></tr></table>"; 
                 
-                if (empty($result)) {
+                if ($payments['count'] == 0) {
 			echo "<div class='content padding20'>
 				<p>".Functions::localize('Ei erääntyviä maksuja')."</p>
 
@@ -34,16 +34,16 @@
 						<th>Poista</th>
 					</tr>
 				";
-                    $k = 0;
                     $i= 1;
-                            while($row = $result->get()) {
-				$tapvm = $row[$k]->tapvm;
-				$saajanNimi = $row[$k]->saajannimi;
-				$maksajanNimi = $row[$k]->maksajannimi;
-				$summa = $row[$k]->summa;
-				$selite = $row[$k]->selite;
-				$maksaja = $row[$k]->maksaja;
-				$arkistotunnus = $row[$k]->arkistotunnus;
+                    foreach($payments['result'] as $row)
+                    {
+				$tapvm = $row->tapvm;
+				$saajanNimi = $row->saajannimi;
+				$maksajanNimi = $row->maksajannimi;
+				$summa = $row->summa;
+				$selite = $row->selite;
+				$maksaja = $row->maksaja;
+				$arkistotunnus = $row->arkistotunnus;
 				
 				echo "<tr";
 					if ($i%2 == 1) echo " class='oddRow'";
@@ -55,7 +55,7 @@
 					";
 				
 				// jos laskun maksaja on sama kuin yrityksen oma tili, on kyse maksusta (eli tulostetaan miinusmerkki)
-				if ( $row[$k]->maksaja == $tilinro) {
+				if ( $row->maksaja == $tilinro) {
 					echo "<td>-$summa</td>";
 					$tilinSaldoAikavalilla = $tilinSaldoAikavalilla - $summa;
 				} else {
@@ -75,7 +75,7 @@
 					echo"	</td>
 					</tr>
 					";
-                                $k++;
+                        
 			}
 		}
 		echo "

@@ -70,7 +70,7 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => '127.0.0.1',
-			'database' => 'pupesoft',
+			'database' => 'apitest',
 			'username' => 'root',
 			'password' => '',
 			'charset'  => 'latin1',

@@ -3,6 +3,7 @@
 class UusiMaksu_Controller extends Base_Controller
 {    
     public $restful = true;
+    
     public function get_index()
     {
         Session::put('sivu','uusiMaksu');
@@ -61,7 +62,7 @@ class UusiMaksu_Controller extends Base_Controller
         $viesti = '';
         $summa = '';
         if(Input::has('jatka') || Input::has('muuta') || !Input::has('tyhjenna')){
-            DB::connection();
+            //DB::connection();
             $maksunErapaiva = mysql_real_escape_string(Input::get( 'maksunErapaiva'));
             $maksupvm = mysql_real_escape_string(substr($maksunErapaiva, 6, 4) . '-' . substr($maksunErapaiva, 3, 2) . '-' . substr($maksunErapaiva, 0, 2));
             $maksajanNimi = mysql_real_escape_string(Input::get( 'maksajanNimi' ));
@@ -157,16 +158,6 @@ class UusiMaksu_Controller extends Base_Controller
      */ //  echo "This is the profile page.";
     }
     
-    public function action_login()
-    {
-        echo "This is the login form.";
-    }
-    public function action_logout()
-    {
-        echo "This is the logout action.";
-    }
-    
-   
     public function __construct() {
         parent::__construct();
     }
