@@ -70,11 +70,11 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => '127.0.0.1',
-			'database' => 'apitest',
+			'database' => 'pupesoft',
 			'username' => 'root',
 			'password' => '',
 			'charset'  => 'latin1',
-                        'collation' => 'latin1_swedish_ci',
+            'collation' => 'latin1_swedish_ci',
 			'prefix'   => '',
 
 		),

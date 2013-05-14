@@ -48,15 +48,15 @@ Route::get('uusimaksu', array('before' => 'filter', function()
 {
     return View::make('uusimaksu');
 }));*/
-Route::any('api/v1/todos/(:num?)', array('as' => 'api.todos', 'uses' => 'api.todos@index'));
-/*Route::controller('uusimaksu');
-Route::controller('eraantyvatmaksut');
-Route::controller('tilitapahtumat');
-Route::controller('account');
-Route::controller('luotontiedot');
-Route::controller('siirrarahaa');
-Route::controller('roolinvaihto');
-Route::secure_controller('home');*/
+//Route::any('api/v1/todos/(:num?)', array('as' => 'api.todos', 'uses' => 'api.todos@index'));
+Route::secure_controller('uusimaksu');
+Route::secure_controller('eraantyvatmaksut');
+Route::secure_controller('tilitapahtumat');
+Route::secure_controller('account');
+Route::secure_controller('luotontiedot');
+Route::secure_controller('siirrarahaa');
+Route::secure_controller('roolinvaihto');
+Route::secure_controller('home');
 
 //Route::controller(Controller::detect());
 //Route::get('about', 'home@about');
@@ -144,7 +144,7 @@ Route::post('login', function() {
    
 });*/
 
-/*
+
 Route::post('login', function() {
        // get POST data
     $userdata = array(
@@ -155,12 +155,12 @@ Route::post('login', function() {
    if ( Auth::attempt($userdata) )
     {
         // we are now logged in, go to home
-        return Redirect::to('home');
+        return Redirect::to_secure('home');
     }
     else
     {
         // auth failure! lets go back to the login
-        return Redirect::to('login')
+        return Redirect::to_secure('login')
             ->with('login_errors', true);
         // pass any error notification you want
         // i like to do it this way :)
@@ -169,7 +169,7 @@ Route::post('login', function() {
 
 Route::get('login', function() {
     return View::make('home.index'); 
-});*/
+});
 
 Event::listen('404', function()
 {
@@ -208,7 +208,7 @@ Event::listen('500', function($exception)
 |		}));
 |
 */
-/*
+
 Route::filter('before', function()
 {
     Session::put('ainopankki','');
@@ -227,7 +227,7 @@ Route::filter('before', function()
     }
 
     Session::put('lang', $lang);
-    return Route::controller($route);
+    return Route::secure_controller($route);
     
     //get('name');
 	// Do stuff before every request to your application...
@@ -245,7 +245,7 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+	if (Auth::guest()) return Redirect::to_secure('login');
 });
 
 Route::get('logout', function() {
@@ -254,8 +254,8 @@ Route::get('logout', function() {
     Session::forget('lang');
     Session::flush();
     Session::put('lang',$language);
-    return Redirect::to('home');
-});*/
+    return Redirect::to_secure('home');
+});
 
 /*Route::filter('apiauth', function()
 {

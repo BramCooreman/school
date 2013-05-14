@@ -3,19 +3,22 @@ class Tilitapahtumat_Controller extends Base_Controller
 {    
     public $restful = true;
     
-    public function get_index()
+    public function get_index()   //read
     {
         Session::put('sivu','tilitapahtumat');
         $values = self::printLastTransactions();
+        
         $this->layout->nest('content', 'tilitapahtumat.index', $values);
     }
     
-    public function post_index()
+    public function post_index()   //create
     {
         $tilinSaldoAikavalilla = 0;
         $errorText ="";
         $tempSaldo = 0;
+     
         if (Input::has( 'search' )) {
+            
             $startDate = Input::get( 'startdate' );
             $endDate = Input::get( 'enddate');
             $startDate = Functions::checkDateFormat( $startDate );
@@ -200,10 +203,17 @@ class Tilitapahtumat_Controller extends Base_Controller
                     return View::make('home.index')
                                     ->nest('content', 'tilitapahtumat.index', $values); 
             }
-                $values = array('startDate' => $startDate, 'endDate' => $endDate,'errorText' => $errorText, "bankAccount"=> $bankAccount, 
+               $values = array('startDate' => $startDate, 'endDate' => $endDate,'errorText' => $errorText, "bankAccount"=> $bankAccount, 
                   "bankBalance" => $bankBalance, 'tempSaldo' => $tempSaldo, 'tilinSaldo' => $tilinSaldo, 'tilinro' => $tilinro);
-          return View::make('home.index')
-                                    ->nest('content', 'tilitapahtumat.index', $values); 
+         /* 
+          $json = json_encode( $values );
+          $file = 'test.json';
+          file_put_contents( $file, $json);   */
+          
+       /*   return View::make('home.index')
+                                    ->nest('content', 'tilitapahtumat.index', $values);    
+                  */                  
+                                    return Response::json($values);
         }
         else {
 		//printTimeFrameSearchForm();
@@ -229,7 +239,7 @@ class Tilitapahtumat_Controller extends Base_Controller
         
                          /*  return View::make('home.index')
                                     ->nest('content', 'tilitapahtumat.index', $values); // printTimeFrameSearchForm();
-                    	*/
+                    	*/         
         	
     }
     

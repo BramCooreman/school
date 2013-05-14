@@ -17,6 +17,7 @@ class EraantyvatMaksut_Controller extends Base_Controller
         $payments = Pankkitapahtuma::payments($tilinro,$today);
 
         $values = array('yhtio'=> $yhtio, 'bankAccount' => $bankAccount, 'printToday' => $printToday, 'payments' => $payments);
+       // return Response::json($values);
         return View::make('home.index')->nest('content','eraantyvatMaksut.index',$values);
                 //$this->layout->nest('content', 
     }
